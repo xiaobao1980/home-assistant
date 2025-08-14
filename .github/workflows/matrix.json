@@ -112,11 +112,11 @@
     "defconfig": "tinker",
     "architecture": "arm",
     "label": "board/tinker"
-  }
+  },
   {
     "id": "lubancat-2",
     "defconfig": "lubancat-2",
     "architecture": "aarch64",
     "label": "board/lubancat-2"
-  },
+  }
 ]
