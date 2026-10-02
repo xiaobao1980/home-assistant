@@ -30,7 +30,10 @@ install_boot() {
     if [ "$RAUC_SYSTEM_COMPATIBLE" = "haos-rpi5-64" ]; then
         rm -rf "${BOOT_MNT}/slot-default"
         cp -r "${BOOT_NEW}/slot-A" "${BOOT_MNT}/slot-default"
-        sed -i "1 s/rootfstype=squashfs //" /mnt/boot/cmdline.txt
+        # Add rootfstype=erofs to cmdline.txt, can be removed in HAOS 19.0
+        if ! grep -q "rootfstype=" "${BOOT_MNT}/cmdline.txt"; then
+            sed -i "1 s/root=[^ ]*/& rootfstype=erofs/" "${BOOT_MNT}/cmdline.txt"
+        fi
     else
         # Backup boot config
         cp -f "${BOOT_MNT}"/*.txt "${BOOT_TMP}/" || true
@@ -60,14 +63,6 @@ install_spl() {
     else
         dd if="${RAUC_IMAGE_NAME}" of="${DEVICE_ROOT}" conv=notrunc ${FLAGS} bs=1 count=440
         dd if="${RAUC_IMAGE_NAME}" of="${DEVICE_ROOT}" conv=notrunc ${FLAGS} bs=512 seek=1 skip=1
-    fi
-
-    # Flash to eMMC boot partition if necessary
-    if [ "$RAUC_SYSTEM_COMPATIBLE" = "haos-odroid-xu4" ] && [ -b "${DEVICE_ROOT}boot0" ]; then
-        echo "Updating eMMC boot partition"
-        echo 0 > /sys/block/"$(basename "${DEVICE_ROOT}boot0")"/force_ro
-        dd if="${RAUC_IMAGE_NAME}" of="${DEVICE_ROOT}boot0" conv=notrunc ${FLAGS} bs=512 skip=1 count=2047
-        echo 1 > /sys/block/"$(basename "${DEVICE_ROOT}boot0")"/force_ro
     fi
 }
 

@@ -1,4 +1,4 @@
-From 1c96ac8457c0131f256fe8208946dae548f28d67 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Jan=20=C4=8Cerm=C3=A1k?= <sairon@sairon.cz>
 Date: Mon, 15 Apr 2024 14:07:34 +0200
 Subject: [PATCH] USB: storage: Increase maximum length of the quirks string
@@ -16,7 +16,7 @@ Signed-off-by: Jan Čermák <sairon@sairon.cz>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index d36f3b6992bbd..f976f074350bc 100644
+index 152ee3376550..6ffc1cc5553f 100644
 --- a/drivers/usb/storage/usb.c
 +++ b/drivers/usb/storage/usb.c
 @@ -165,7 +165,7 @@ static const struct kernel_param_ops delay_use_ops = {

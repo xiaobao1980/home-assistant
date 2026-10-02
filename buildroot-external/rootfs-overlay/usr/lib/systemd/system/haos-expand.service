@@ -1,0 +1,20 @@
+[Unit]
+Description=HAOS data resizing
+DefaultDependencies=no
+Before=mnt-data.mount
+RefuseManualStart=true
+RefuseManualStop=true
+Requires=dev-disk-by\x2dlabel-hassos\x2ddata.device
+After=dev-disk-by\x2dlabel-hassos\x2ddata.device systemd-fsck@dev-disk-by\x2dlabel-hassos\x2ddata.service
+
+[Service]
+Type=oneshot
+# Resizing the data partition can take a long time on slow or previously used
+# disks. There is no point in aborting it after the default start timeout: if
+# the resize fails the system is unusable anyway, so let it run for as long as
+# it needs instead of failing the boot. See #3365.
+TimeoutStartSec=infinity
+ExecStart=/usr/libexec/haos-expand
+
+[Install]
+WantedBy=local-fs.target
